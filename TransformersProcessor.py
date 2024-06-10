@@ -22,7 +22,7 @@ class TransformersProcessor:
         text_inputs = self.processor(text = message, src_lang="arb", return_tensors="pt").to(device)
         audio_array_from_text = self.model.generate(**text_inputs, tgt_lang="arb",speaker_id=10)[0].cpu().numpy().squeeze()
         sample_rate = self.model.config.sampling_rate
-        scipy.io.wavfile.write(file_path, rate=sample_rate, data=audio_array_from_text.astype(np.float32))
+        scipy.io.wavfile.write(file_path, rate=16000, data=audio_array_from_text.astype(np.float16))
 
 
 
