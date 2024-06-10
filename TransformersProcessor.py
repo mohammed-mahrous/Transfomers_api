@@ -6,7 +6,6 @@ class TransformersProcessor:
     def __init__(self) -> None:
         self.model = SeamlessM4Tv2ForTextToSpeech.from_pretrained("facebook/seamless-m4t-v2-large",torch_dtype=torch.float16)
         self.processor = AutoProcessor.from_pretrained("facebook/seamless-m4t-v2-large")
-        self.model.to(self.device)
         
 
     def process(self,message:str) -> bytes:
