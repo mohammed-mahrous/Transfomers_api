@@ -3,7 +3,7 @@ from TransformersProcessor import TransformersProcessor
 import time , tempfile
 
 
-HOST = 'localhost'
+HOST = '10.105.173.89'
 PORT = 5000
 
 
