@@ -1,6 +1,5 @@
 from transformers import SeamlessM4Tv2ForTextToSpeech , AutoProcessor 
 import torch , scipy, numpy as np
-import torchaudio
 
 
 class TransformersProcessor:
@@ -11,16 +10,17 @@ class TransformersProcessor:
         self.model.to(self.device)
 
     def process(self,message:str) -> bytes:
+        
         text_inputs = self.processor(text = message, src_lang="arb", return_tensors="pt").to(self.device)
         audio_array_from_text = self.model.generate(**text_inputs, tgt_lang="arb",speaker_id=10)[0].cpu().numpy().squeeze()
-        return audio_array_from_text.astype(np.float32)
+        return audio_array_from_text.astype(np.int16)
 
     def ProcessAndWriteFile(self,message:str, file_path:str="out_from_text.wav") -> None:
+        
         text_inputs = self.processor(text = message, src_lang="arb", return_tensors="pt").to(self.device)
-        audio_array_from_text = self.model.generate(**text_inputs, tgt_lang="arb",speaker_id=10)[0]
+        audio_array_from_text = self.model.generate(**text_inputs, tgt_lang="arb",speaker_id=10)[0].cpu().numpy().squeeze()
         sample_rate = self.model.config.sampling_rate
-        torchaudio.save(uri=file_path, src=audio_array_from_text.to(torch.float32).cpu(), sample_rate=16000,encoding='PCM_F', format='wav',bits_per_sample=16)
-
+        scipy.io.wavfile.write(file_path, rate=16000, data=audio_array_from_text.astype(np.int16))
 
 
 
