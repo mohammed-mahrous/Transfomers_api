@@ -18,7 +18,7 @@ class TransformersProcessor:
     def ProcessAndWriteFile(self,message:str, file_path:str="out_from_text.wav") -> None:
         
         text_inputs = self.processor(text = message, src_lang="arb", return_tensors="pt").to(self.device)
-        audio_array_from_text = self.model.generate(**text_inputs, tgt_lang="arb",speaker_id=10)[0].numpy().squeeze()
+        audio_array_from_text = self.model.generate(**text_inputs, tgt_lang="arb",speaker_id=10)[0].cpu().numpy().squeeze()
         sample_rate = self.model.config.sampling_rate
         scipy.io.wavfile.write(file_path, rate=16000, data=audio_array_from_text.astype(np.int16))
 
