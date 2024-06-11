@@ -18,14 +18,9 @@ class TransformersProcessor:
     def ProcessAndWriteFile(self,message:str, file_path:str="out_from_text.wav") -> None:
         
         text_inputs = self.processor(text = message, src_lang="arb", return_tensors="pt").to(self.device)
-        audio_array_from_text = self.model.generate(**text_inputs, tgt_lang="arb",speaker_id=10)[0]
+        audio_array_from_text = self.model.generate(**text_inputs, tgt_lang="arb",speaker_id=10)[0].numpy()
         sample_rate = self.model.config.sampling_rate
-        if torch.is_tensor(audio_array_from_text):
-            audio_array_from_text = audio_array_from_text.cpu().numpy()
-        if isinstance(audio_array_from_text, list):
-            audio_array_from_text = np.array(audio_array_from_text)
-        wav_norm = audio_array_from_text * (32767 / max(0.01, np.max(np.abs(audio_array_from_text))))
-        scipy.io.wavfile.write(file_path, rate=16000, data=wav_norm.astype(np.int16))
+        scipy.io.wavfile.write(file_path, rate=16000, data=audio_array_from_text.astype(np.int16))
 
 
 
