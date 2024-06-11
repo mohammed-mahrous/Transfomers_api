@@ -14,7 +14,7 @@ processor = TransformersProcessor()
 def text_to_speech():
     json:dict = request.get_json()
     text = json['text']
-    f = tempfile.NamedTemporaryFile(prefix='.wav', delete=False)
+    f = tempfile.NamedTemporaryFile(suffix='.wav', delete=False)
     start = time.time()
     processor.ProcessAndWriteFile(text,file_path=f.name)
     print('filePath: {}'.format(f.name))
