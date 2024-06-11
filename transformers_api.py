@@ -17,7 +17,7 @@ def text_to_speech():
     f = tempfile.NamedTemporaryFile(suffix='.wav', delete=False)
     start = time.time()
     processor.ProcessAndWriteFile(text,file_path=f.name)
-    # print('filePath: {}'.format(f.name))
+    print('filePath: {}'.format(f.name))
     end = time.time()
     elapsed = end - start 
     print('elapsed: {}'.format(elapsed))
