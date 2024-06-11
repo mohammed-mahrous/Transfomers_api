@@ -19,7 +19,7 @@ class TransformersProcessor:
         text_inputs = self.processor(text = message, src_lang="arb", return_tensors="pt").to(self.device)
         audio_array_from_text = self.model.generate(**text_inputs, tgt_lang="arb",speaker_id=10)[0]
         sample_rate = self.model.config.sampling_rate
-        torchaudio.save(file_path, audio_array_from_text.to(torch.float16).cpu(), 16000)
+        torchaudio.save(file_path, audio_array_from_text.to(torch.float32).cpu(), 16000)
 
 
 
